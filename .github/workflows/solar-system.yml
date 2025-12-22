@@ -4,37 +4,40 @@ on:
   push:
     branches:
       - main
-
 jobs:
   unit-testing:
     runs-on: ubuntu-latest
 
     services:
-    mongo:
-      image: mongo:6
-      env:
-        MONGO_INITDB_ROOT_USERNAME: admin
-        MONGO_INITDB_ROOT_PASSWORD: admin123
-      ports:
-        - 27017:27017
+      mongo:
+        image: mongo:6
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: admin123
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - name: gitcheckout
+      - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Setup NodeJS Version
-        uses: actions/setup-node@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-            node-version: 20
+          node-version: "20"
 
       - name: Install dependencies
         run: npm install
 
-      - name: testing
-        run: npm test
+      - name: Run tests
         env:
-          MONGO_URI: mongodb://admin:admin123@mongo:27017/solar?authSource=admin
-
-
+          # Use mongo service hostname "mongo", NOT localhost
+          MONGO_URI: mongodb://admin:admin123@mongo:27017/superData?authSource=admin
+        run: npm test
 
         
