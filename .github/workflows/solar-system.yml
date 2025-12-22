@@ -8,6 +8,7 @@ on:
 jobs:
 
   unit-testing:
+    needs: matrix-using
     runs-on: ubuntu-latest
 
     steps:
@@ -38,6 +39,24 @@ jobs:
       - name: printing my name
         
         run: echo "my name is ${{vars.NAME}} and my friend is ${{secrets.NAME}}"
+
+  
+  matrix-using:
+    stratagy:
+      matrix:
+        runs-on: [ubuntu-latest, window]
+        images: [nginx]
+
+        steps:
+          - name: git checkout
+            uses: actions/checkout@v4
+
+          - name: install 
+            run: npm install
+
+          
+
+
 
 
       
