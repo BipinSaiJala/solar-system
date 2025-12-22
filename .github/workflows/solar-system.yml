@@ -44,8 +44,10 @@ jobs:
   matrix-using:
     strategy:
       matrix:
-        runs-on: [ubuntu-latest, window]
+        os: [ubuntu-latest, window]
         images: [nginx]
+
+        runs-on: ${{matrix.os}}
 
         steps:
           - name: git checkout
@@ -53,6 +55,9 @@ jobs:
 
           - name: install 
             run: npm install
+
+          - name: docker
+            run: docker run ${{matrix.images}}
 
           
 
