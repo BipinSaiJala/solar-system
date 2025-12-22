@@ -9,6 +9,11 @@ jobs:
   unit-testing:
     runs-on: ubuntu-latest
 
+    env:
+          MONGO_URI: mongodb://superuser:SuperPassword@mongo:27017/superData?authSource=admin
+          MONGO_USER: superuser
+          MONGO_PASSWORD: SuperPassword
+
     steps:
       - name: gitcheckout
         uses: actions/checkout@v4
