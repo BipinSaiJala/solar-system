@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bipin.txt
-          file: hello.txt
+          path: hello.txt
 
       
         
