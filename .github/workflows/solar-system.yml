@@ -26,7 +26,7 @@ jobs:
           path: hello.txt
 
 
-jobs:
+
   testing:
     runs-on: ubuntu-latest
     env:
