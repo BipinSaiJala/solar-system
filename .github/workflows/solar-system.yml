@@ -9,10 +9,14 @@ jobs:
   unit-testing:
     runs-on: ubuntu-latest
 
-    env:
-          MONGO_URI: mongodb://superuser:SuperPassword@mongo:27017/superData?authSource=admin
-          MONGO_USER: superuser
-          MONGO_PASSWORD: SuperPassword
+    services:
+    mongo:
+      image: mongo:6
+      env:
+        MONGO_INITDB_ROOT_USERNAME: admin
+        MONGO_INITDB_ROOT_PASSWORD: admin123
+      ports:
+        - 27017:27017
 
     steps:
       - name: gitcheckout
@@ -28,6 +32,9 @@ jobs:
 
       - name: testing
         run: npm test
+        env:
+          MONGO_URI: mongodb://admin:admin123@mongo:27017/solar?authSource=admin
+
 
 
         
