@@ -25,5 +25,20 @@ jobs:
           name: bipin.txt
           path: hello.txt
 
+
+
+  testing:
+    runs-on: ubuntu-latest
+    env:
+      MANGO_URI: "mongodb://admin:admin123@localhost:27017/superData?authSource=admin"
+      MANGO_USERNAME: "admin"
+      MANGO_PASSWORD: "admin123"
+
+    steps:
+      - name: unit-testing
+        run: npm test 
+      
+
+
       
         
