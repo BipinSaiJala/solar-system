@@ -42,7 +42,7 @@ jobs:
 
   
   matrix-using:
-    stratagy:
+    strategy:
       matrix:
         runs-on: [ubuntu-latest, window]
         images: [nginx]
