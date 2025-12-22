@@ -20,7 +20,7 @@ jobs:
         run: echo "Hello World" >> hello.txt
 
       - name: artifacts upload
-        uses: actions/upload-artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: bipin.txt
           file: hello.txt
