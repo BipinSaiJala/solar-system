@@ -15,7 +15,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        timeout-minuts: 10
         run: npm install
 
       - name: generating the file
