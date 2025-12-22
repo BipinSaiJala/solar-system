@@ -55,10 +55,6 @@ jobs:
 
           - name: install 
             run: npm install
-
-          - name: docker
-            run: docker run ${{matrix.images}}
-
           
 
 
