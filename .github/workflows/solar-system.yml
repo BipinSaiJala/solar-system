@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature
 jobs:
 
   unit-testing:
@@ -26,42 +27,14 @@ jobs:
           path: hello.txt
 
 
-
-  testing:
+  checking_needs:
     runs-on: ubuntu-latest
-    
-    services:
-      mongo:
-        image: mongo:6
-        env:
-          MONGO_INITDB_ROOT_USERNAME: admin
-          MONGO_INITDB_ROOT_PASSWORD: admin123
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
-      - name: git checkout
-        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - run: npm ci
-
-      - name: Run tests
-        env:
-          MONGO_USERNAME: admin
-          MONGO_PASSWORD: admin123
-          MONGO_URI: mongodb://admin:admin123@mongo:27017/superData?authSource=admin
-        run: npm test
-
-      
+      - name: printing my name
+        env: 
+          NAME: Bipin
+        run: echo "my name is ${{env.NAME}}"
 
 
       
