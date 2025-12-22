@@ -47,9 +47,9 @@ jobs:
         os: [ubuntu-latest, window]
         images: [nginx]
 
-        runs-on: ${{matrix.os}}
+    runs-on: ${{matrix.os}}
 
-        steps:
+    steps:
           - name: git checkout
             uses: actions/checkout@v4
 
