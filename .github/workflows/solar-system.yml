@@ -7,9 +7,7 @@ on:
       - feature
 jobs:
 
-  concurrency:
-      group: development
-      cancel-in-progress: true
+
 
   unit-testing:
     needs: matrix-using
@@ -46,6 +44,9 @@ jobs:
 
   
   matrix-using:
+    concurrency:
+      group: development
+      cancel-in-progress: true
     strategy:
       matrix:
         os: [ubuntu-latest]
