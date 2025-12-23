@@ -48,12 +48,12 @@ jobs:
         images: [nginx, alpine]
 
         include:
-          images: [nginx]
-          os: [ubuntu-latest]
+          - images: [nginx]
+            os: [ubuntu-latest]
 
         exclude:
-          images: [alpine]
-          os: [ubuntu-latest]
+          - images: [alpine]
+            os: [ubuntu-latest]
 
     runs-on: ${{matrix.os}}
 
