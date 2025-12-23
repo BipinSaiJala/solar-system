@@ -5,73 +5,70 @@ on:
     branches:
       - main
       - feature
+
+  pull:
+    types:
+      - opened
+      - closed
+    branches:
+      - main
+
+
 jobs:
-
-
-
   unit-testing:
-    needs: matrix-using
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: generating the file
-        run: echo "Hello World" >> hello.txt
-
-      - name: artifacts upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: bipin.txt
-          path: hello.txt
-
-
-  checking_needs:
-    runs-on: ubuntu-latest
-    needs: [unit-testing]
-    concurrency:
-      group: development
-      cancel-in-progress: true
-    steps:
-
-      - name: printing my name
-        
-        run: echo "my name is ${{vars.NAME}} and my friend is ${{secrets.NAME}}"
-
-  
-  matrix-using:
-    concurrency:
-      group: development
-      cancel-in-progress: true
     strategy:
       matrix:
         os: [ubuntu-latest]
-        images: [nginx, alpine]
-
-        include:
-          - images: [nginx]
-            os: [ubuntu-latest]
-
-        exclude:
-          - images: [alpine]
-            os: [ubuntu-latest]
+        nodejs_version: [18, 19, 20]
+      include:
+          - nodejs_version: 19
+            os: ubuntu-latest
+      exclude:
+          - nodejs_version: 18
+            os: ubuntu-latest
 
     runs-on: ${{matrix.os}}
 
     steps:
-          - name: git checkout
-            uses: actions/checkout@v4
+      - name: git checkout
+        uses: actions/checkout@v4
 
-          - name: install 
-            run: npm install
-          
+      - name: nodejs-version
+        uses: actions/setup-node@v3
+        with:
+          version: ${{matrix.nodejs_version}}
 
+      - name: testing
+        continue-on-error: true
+        run: npm test
 
+      - name: Artifacts
+        uses: actions/upload-artifact
+        with:
+          name: kanny.txt
+          path: test-results.xml
 
+  code-coverage:
+    runs-on: ubuntu-latest
 
-      
-        
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v4
+
+      - name: install dependences
+        run: npm install
+
+      - name: nodejs
+        uses: actions/setup-node@v3
+        with:
+          version: 18
+
+      - name: coverage
+        continue-on-error: true
+        uses: npm run coverage
+
+      - name: Artifact
+        uses: actions/upload-artifact
+        with:
+          name: kanny
+          path: coverage
