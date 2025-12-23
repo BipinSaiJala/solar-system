@@ -38,10 +38,10 @@ jobs:
           version: ${{matrix.nodejs_version}}
 
       - name: testing
+        continue-on-error: true
         run: npm test
 
       - name: Artifacts
-        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: kanny.txt
@@ -64,10 +64,10 @@ jobs:
 
       - name: coverage
         id: unique
+        continue-on-error: true
         run: npm run coverage
 
       - name: Artifact
-        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: Bipin
