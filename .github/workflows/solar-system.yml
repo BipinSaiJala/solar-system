@@ -6,13 +6,6 @@ on:
       - main
       - feature
 
-  pull:
-    types:
-      - opened
-      - closed
-    branches:
-      - main
-
 
 jobs:
   unit-testing:
