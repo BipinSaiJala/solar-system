@@ -58,7 +58,7 @@ jobs:
 
       - name: coverage
         continue-on-error: true
-        uses: npm run coverage
+        run: npm run coverage
 
       - name: Artifact
         uses: actions/upload-artifact@v4
