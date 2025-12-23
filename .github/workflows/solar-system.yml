@@ -7,6 +7,10 @@ on:
       - feature
 jobs:
 
+  concurrency:
+      group: development
+      cancel-in-progress: true
+
   unit-testing:
     needs: matrix-using
     runs-on: ubuntu-latest
@@ -44,7 +48,7 @@ jobs:
   matrix-using:
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-20.04]
+        os: [ubuntu-latest]
         images: [nginx, alpine]
 
         include:
