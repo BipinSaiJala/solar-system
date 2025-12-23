@@ -13,12 +13,12 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         nodejs_version: [18, 19, 20]
-      include:
-          - nodejs_version: 19
-            os: ubuntu-latest
-      exclude:
-          - nodejs_version: 18
-            os: ubuntu-latest
+        include:
+            - nodejs_version: 19
+              os: ubuntu-latest
+        exclude:
+            - nodejs_version: 18
+              os: ubuntu-latest
 
     runs-on: ${{matrix.os}}
 
