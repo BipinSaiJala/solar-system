@@ -36,7 +36,7 @@ jobs:
         run: npm test
 
       - name: Artifacts
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4
         with:
           name: kanny.txt
           path: test-results.xml
@@ -61,7 +61,7 @@ jobs:
         uses: npm run coverage
 
       - name: Artifact
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4
         with:
           name: kanny
           path: coverage
