@@ -44,8 +44,16 @@ jobs:
   matrix-using:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, ubuntu-20.04]
         images: [nginx, alpine]
+
+        include:
+          images: [nginx]
+          os: [ubuntu-latest]
+
+        exclude:
+          images: [alpine]
+          os: [ubuntu-latest]
 
     runs-on: ${{matrix.os}}
 
