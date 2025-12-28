@@ -17,7 +17,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    if: guthub.event_name == 'pull_request'
+    if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
       - name: echo
@@ -101,4 +101,5 @@ jobs:
             pr_sha=$(git rev-parse HEAD^2 | cut -c1-7)
             tag="git-${pr_sha}"
             echo "tag:$tag"
+
 
