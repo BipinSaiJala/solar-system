@@ -89,7 +89,7 @@ jobs:
   #         name: Bipin
   #         path: coverage
     
-    Deploy:
+  Deploy:
       runs-on: ubuntu-latest
       if: github.event_name == 'push'
       steps:
@@ -101,3 +101,4 @@ jobs:
             pr_sha=$(git rev-parse HEAD^2 | cut -c1-7)
             tag="git-${pr_sha}"
             echo "tag:$tag"
+
