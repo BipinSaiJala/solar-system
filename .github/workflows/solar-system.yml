@@ -1,6 +1,10 @@
 name: Solar System Workflow
 
 on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
   push:
     branches:
       - main
@@ -8,67 +12,92 @@ on:
 
 
 jobs:
-  unit-testing:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        nodejs_version: [18, 19, 20]
-        include:
-            - nodejs_version: 19
-              os: ubuntu-latest
-        exclude:
-            - nodejs_version: 18
-              os: ubuntu-latest
-
-    runs-on: ${{matrix.os}}
-
-    steps:
-      - name: git checkout
-        uses: actions/checkout@v4
-
-      - name: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{runner.os}}-nodejs-${{hashFiles('package-lock.json')}}
-
-      - name: nodejs-version
-        uses: actions/setup-node@v3
-        with:
-          version: ${{matrix.nodejs_version}}
-
-      - name: testing
-        continue-on-error: true
-        run: npm test
-
-      - name: Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: kanny.txt
-          path: test-results.xml
-
-  code-coverage:
+  Build:
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: read
+    if: guthub.event_name == 'pull_request'
     steps:
-      - name: git checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: echo
+        run: |
+          TAG="git-${SHORT_SHA}"
+          echo "tag=$TAG"
+  # unit-testing:
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest]
+  #       nodejs_version: [18, 19, 20]
+  #       include:
+  #           - nodejs_version: 19
+  #             os: ubuntu-latest
+  #       exclude:
+  #           - nodejs_version: 18
+  #             os: ubuntu-latest
 
-      - name: install dependences
-        run: npm install
+  #   runs-on: ${{matrix.os}}
 
-      - name: nodejs
-        uses: actions/setup-node@v3
-        with:
-          version: 18
+  #   steps:
+  #     - name: git checkout
+  #       uses: actions/checkout@v4
 
-      - name: coverage
-        id: unique
-        continue-on-error: true
-        run: npm run coverage
+  #     - name: cache
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: node_modules
+  #         key: ${{runner.os}}-nodejs-${{hashFiles('package-lock.json')}}
 
-      - name: Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Bipin
-          path: coverage
+  #     - name: nodejs-version
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         version: ${{matrix.nodejs_version}}
+
+  #     - name: testing
+  #       continue-on-error: true
+  #       run: npm test
+
+  #     - name: Artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: kanny.txt
+  #         path: test-results.xml
+
+  # code-coverage:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: git checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: install dependences
+  #       run: npm install
+
+  #     - name: nodejs
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         version: 18
+
+  #     - name: coverage
+  #       id: unique
+  #       continue-on-error: true
+  #       run: npm run coverage
+
+  #     - name: Artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: Bipin
+  #         path: coverage
+    
+    Deploy:
+      runs-on: ubuntu-latest
+      if: github.event_name == 'push'
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 2
+        - name: get tag
+          run: |
+            pr_sha=$(git rev-parse HEAD^2 | cut -c1-7)
+            tag="git-${pr_sha}"
+            echo "tag:$tag"
